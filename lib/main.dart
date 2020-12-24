@@ -144,9 +144,12 @@ class LettersWidget extends StatelessWidget {
       children: letters.characters.toList().asMap().entries.map((entry) {
         final index = entry.key;
         final letter = entry.value;
-        return LetterWidget(
-          letter: letter,
-          opacity: index >= numberStartPos ? 1.0 : 0.1,
+        return Padding(
+          padding: const EdgeInsets.only(left: 2.0),
+          child: LetterWidget(
+            letter: letter,
+            opacity: index >= numberStartPos ? 1.0 : 0.1,
+          ),
         );
       }).toList(),
     );
@@ -165,54 +168,29 @@ int findStartingPoint(String letters) {
 class LetterWidget extends StatelessWidget {
   final String letter;
   final double opacity;
+  final Color _color;
 
-  const LetterWidget({
+  LetterWidget({
     @required this.letter,
     this.opacity = 1.0,
     Key key,
   })  : assert(letter.length == 1),
+        _color = colors[letter.codeUnitAt(0) % colors.length].withOpacity(opacity),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      // transitionBuilder: (Widget child, Animation<double> animation) {
-      //   return ScaleUpTransition(child: child, scale: animation);
-      // },
+      duration: const Duration(milliseconds: 300),
       child: Text(
         letter.toUpperCase(),
         key: ValueKey<String>(letter),
         style: TextStyle(
-          color: colors[letter.codeUnitAt(0) % colors.length].withOpacity(opacity),
+          color: _color,
           fontSize: 28,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
       ),
-    );
-  }
-}
-
-class ScaleUpTransition extends AnimatedWidget {
-  const ScaleUpTransition({
-    Key key,
-    @required Animation<double> scale,
-    this.child,
-  })  : assert(scale != null),
-        super(key: key, listenable: scale);
-
-  Animation<double> get scale => listenable as Animation<double>;
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final double scaleValue = scale.value;
-    final Matrix4 transform = Matrix4.identity()..scale(scaleValue, scaleValue, 1.0);
-    return Transform(
-      transform: transform,
-      alignment: Alignment.center,
-      child: child,
     );
   }
 }
