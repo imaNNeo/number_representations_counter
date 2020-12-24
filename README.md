@@ -1,4 +1,4 @@
-# electrons_counter_app
+# number_representations_counter
 
 Implemented for the [#FlutterCounterChallenge2020](https://twitter.com/search?q=FlutterCounterChallenge2020&src=typed_query).
 
